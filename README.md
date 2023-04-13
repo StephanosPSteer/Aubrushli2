@@ -19,4 +19,4 @@ Even from this limited view you can see coverage is extensive, probably too much
 
 Will create a better readme for this soon 
 
-# also note Windows Installer in releases.
+# also note [Windows Installer in releases](https://github.com/StephanosPSteer/Aubrushli2/releases/tag/version2_0)
