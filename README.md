@@ -1,5 +1,5 @@
 # Aubrushli2
-Version2 with killer feature: AUTOMATED SHOT LIST GENERATOR
+# Version2 with killer feature: AUTOMATED SHOT LIST GENERATOR
 
 Whole new codebase and extensive and innovative change to shotlists that mean instead of manually trawling a fountain document to mark shots, 
 
