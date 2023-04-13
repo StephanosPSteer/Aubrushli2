@@ -5,7 +5,7 @@ Whole new codebase and extensive and innovative change to shotlists that mean in
 
 # Aubrushli 2 will give user defined (by default very extensive) coverage to ALL!!! Scenes within a script. 
 
-I include the BigFish fountain document from [Fountain.io[(https://fountain.io/) 
+I processed the BigFish fountain document from [Fountain.io](https://fountain.io/) as an example
 
 and running Aubrushli 2 against that creates 190 shotlists taken from the scenes in the script and covering all actions with multiple shots!!!!
 
