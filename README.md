@@ -17,4 +17,6 @@ Even from this limited view you can see coverage is extensive, probably too much
 
 ![shot_defs](https://user-images.githubusercontent.com/26924183/231724450-669171ff-ef2d-4703-a19e-7194404275e7.png)
 
-Will create a better readme for this soon also note Windows Installer in releases.
+Will create a better readme for this soon 
+
+# also note Windows Installer in releases.
