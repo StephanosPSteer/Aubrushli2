@@ -1,0 +1,97 @@
+Title: AUBRUSHLI - Introduction & How to
+Credit: Written by
+Author: Stephanos Steer
+Draft Date: 20/09/2022
+Contact: stefanoschristofi@yahoo.com
+
+INT. STUDIO - DAY #1#
+
+We open to a medium close up single of Stephanos
+
+/* SHOTSTART 1: 1,CU,SINGLE,EYE/FRONTAL,STATIC,50,SYNC, close up single of Stephanos */
+STEPHANOS
+Hello and welcome to my introduction to AUBRUSHLI. AUBRUSHLI is an app that I created to speed up my film production. It partially automates the process of extracting Cast lists, Breakdown Summaries and shot lists from screenplays. This reduces or eliminates transcribing time and leaves you with csv files which you can then directly print or modify in your favourite spreadsheet app. Today I am going to show you how to install and use AUBRUSHLI. In order to fully demonstrate its functionality I will be using this video's script as an example thats also why I'll be playing a few roles as well, plus its a laugh innit.
+
+/* SHOTEND 1: */
+
+/* SHOTSTART 2: 1,MW,SINGLE,EYE/FRONTAL,STATIC,24,SYNC, medium close up single of Geek */
+GEEK
+AUBRUSHLI is an extended version of the python library for fountain. Fountain is an open source and free way to create screenplays/scripts...pftt actually strictly speaking its more like a mark-up language for screenplays/scripts. The Fountain python Library that AUBRUSHLI extends was coded by Colton J. Provias and sits on top of the objective-c application fountain coded by Nima Yousefi & John August among many others. 
+
+VILLAIN
+AUBRUSHLI apparently allows users to create Cast Lists, breakdown summaries & shot lists for free in a similar way to some of the paid Production Management software. There are of course some caveats. Well obviously because its for the plebs. Its apparently not as user friendly, comprehensive or as aesthetically pleasing as the paid options. You get what you pay for in life my dear, well unless you rig the system, hahahaha, oh but I digress It also comes with no guarantees whatsoever. well what did you expect. AUBRUSHLI is probably not bullet proof enough for technophobes unlike my rolls in fact there are definitely some prerequisites you need before trying it. There is...euch!! a windows standalone executable but don't worry there is a Mac one too for the more discerning. You will need to know how to format a fountain document as well as learn a little bit of extra formatting needed for AUBRUSHLI to work. To repeat it could be buggy so use at your own risk, then again count yourself bloody lucky to be honest.
+
+/* SHOTEND 2: */
+
+/* SHOTSTART 3: 1,CU,SINGLE,EYE/FRONTAL,STATIC,50,SYNC, close up single of Stephanos */
+
+/* SHOTSTART 4: 1,MW,SINGLE,EYE/FRONTAL,STATIC,24,SYNC, medium close up single of Stephanos */
+MOVIE PRODUCER
+So, why did I create this? Well I was gonna make and am still looking to make a second episode of SueDonnyverse my comedy webseries, but I wanted to try and add some virtual production from Unreal Engine this time. I'd seen the awesome mandalorian, and I wanted it. So I found this tutorial on Unreal's site called Independent Filmmaking with Unreal Engine and I watched the first couple of episodes. It said sort your pre-production out first, ya knucklehead and of course that meant getting a properly formatted script, preparing a breakdown summary and shotlist. 
+
+BARGAIN HUNTER
+The tutorial was using studiobinder but I am not in a position to pay for that right now so I of course looked for open source free alternativess. After searching the internet, there didn't seem to be any free ones, but what there were were templates for manually entering breakdown summaries and shotlists. So I had a look at a few of those and watched some videos describing the transcribing process from the script/screenplay to get an idea about what was actually needed. What I did find when looking for open source free alternatives was apps like Trelby, which look great for creating formatted screenplays but then I discovered the fountain markup format for creating scripts or screenplays and thought ah that looks promising. Finally just to mention I saw Better Fountain visual studio code add-in which I am using heavily in this video to make it all colourful and stuff and to produce the actual formatted scripts. 
+
+DEV
+When looking at examples of Fountain documents I could see they were just text documents and the developer in me immediately thought "Ok I can probably extract info from these fountain documents and create spreadsheets or CSVs that are similar to the templates that I have seen online, surely though its already been done." So I did a search and indeed I found a perl script from 2014 that seemed to fit the bill for Shot lists but nothing for breakdown summaries So I decided I would create something. I would rather work in languages/frameworks that I already know and I pretty quickly found the python library for fountain that allowed me to turn fountain documents into objects which I could then save in the csv format. Which effectively allows me at least partially to recreate the templates I had seen online.
+
+/* SHOTEND 3: */
+
+/* SHOTEND 4: */
+
+DEV
+I knew that creating the advanced GUI tools that the paid for options such as studiobinder had would take more development time than I wanted to give at the minute. I also knew therefore that because I couldn't select production categories with the mouse that I had to create tags instead within the document that would do a similar job. However, Cast List didn't need a tag as Characters were already integrated into the Fountain syntax and associated object and therefore it only took a couple of lines of code to create a CSV for the cast list.
+
+GEEK
+So how exactly do you install AUBRUSHLI? Well all you do is go to the github release page /*VFX: link/screenshot/video of github*/ and download the zipped executable appropriate for your system to a folder of your choosing. unzip it and then click it and away you go. Ok yes Windows might say the publisher is unknown but click more info and run anyway and away you go.  /* VFX: video of on Mac and PC downloading and navigating*/
+
+TEACHER
+Now, now, pay attention, The Cast List CSV is created if you tick the Cast List box. It creates the following format. First column is "Cast Name" and it lists the various character names one per line. Second Column is dialogue frequency which says how frequently that character speaks but not how much the character actually says. 
+
+DEV
+Cast list sorted, for breakdown summaries and Shot Lists I knew it wouldn't be quite as easy and that I would definitely need tags. I knew I did not want to see the tags on the script/screenplay that is given to the cast etc because it would just be confusing so I needed to put the tags and info into a part of the fountain document that is already ignored by the format rules. I also needed my tags to possibly go across multiple lines. Looking at the syntax it looked like Notes, Sections or Boneyard might achieve this. Notes I tested with Trelby and they seemed to still appear in the output which was no good, so they were out. Sections appeared to be only single line which would not work for my requirements. So I was left with boneyard and luckily that could cross multiple lines and was totally ignored by Trelby. So I set about designing some tags to go in that. 
+
+DEV
+I try and minimise code as it means less to go wrong. So I am using just opening tags for Breakdown Summaries as I decided each bit of tagged content would be discrete within its own particular boneyard. I decided that they would take the form of uppercase TAG colon: e.g. PROPS: , EXTRAS: , VFX: and then the production note is in a free text format. For the shotlist tags because they could span multiple lines of text I would need opening and closing tags. They took the format of SHOTSTART x: and SHOTEND x: with the x representing the shotnumber. The shotlist tags have to impart a lot of standard specific information and as you will see later they expect a certain amount of comma seperated fields. The complete list of tags is in the description and on the github page.
+
+TEACHER
+Ok, Now pay attention. Here is an example or two of adding a breakdown summary item to a script. Lets take this bit of the script I am reading right now, in it I have put a WARDROBE: tag and in that I have put the teacher outfit which is a blazer, light blue shirt, glasses and dark blue trousers. /* WARDOBE: blazer, light blue shirt, glasses and dark blue trousers. */ and that appears in the breakdown summary as... /* VFX: Breakdown summary shot showing wardrobe item */ Now maybe I also want to add some VFX to this section lets say a fake blackboard. I would add a VFX: tag /* VFX: Fake Blackboard with this bit of the script */ and that appears in the breakdown summary as... so /* VFX: Breakdown summary shot showing vfx blackboard item */ and that is all there is to it for tagging content for breakdown summary. After that its just rinse and repeat as many times as needed in a document. 
+
+GEEK
+Ok so you have added your Breakdown summary tags, however to actually create the CSV file that can populate the breakdown summary you need to tick the Breakdown Summary box press start and you should get a message saying breakdownsummary.csv created and you will then see a csv created in your current folder called breakdownsummary.csv 
+
+TEACHER
+Now Now, settle down breakdownsummary.csv has the following format. First column is "Scene Number" which is self explanatory, then "Scene Name" e.g. INT. STUDIO - DAY, then "TAG"  e.g. VFX:, then "Tagged Resource Required" which shows the whole of the tag in the boneyard, this is the production information. Next "Surrounding Text" which is the text that the boneyard is in, which gives context quickly. Then "Start Line Index" which shows where the text starts. "Start Char Index" shows a starting index number for the first letter or character then "End Char Index" shows similar for the ending character.
+
+DEV
+I know what you are thinking my breakdownsummary.csv looks nothing like the templates you see on the internet. Its true it doesn't but it can be made to either by manually putting the rows into a template or perhaps creating a macro to do it. Personally my preference is to keep it as is. I am used to using filtering in spreadsheets and perhaps coloring by category and it would be more work for me to move it into a template format, so for me its not worth it right now.
+
+/* SHOTSTART 5: 1,MW,SINGLE,EYE/FRONTAL,STATIC,24,SYNC, medium close up single of Teacher */
+TEACHER
+OK...Moving on to Shot lists. To create a shotlist is slightly more complex than a breakdown summary. Once again lets have an example from this script /* VFX: show screenshot this script and above shot */ As you can see there is an opening boneyard tag then a SHOTSTART x: tag where x = the shotnumber (please note the whole tag is inclusive of and up to the space after the :) 
+
+DEV
+Mea Culpa here the shot format is obviously not robust but is good enough for my purposes. If enough people use this I will probably improve it, but it works. 
+
+TEACHER
+Ok thank you mr DEV. Right, Next the details of the shot which are in the format of [Scene number, Shot Size, Shot type, Angle/Orientation, movement, lens, sound, description] 
+
+DEV
+this format is taken from this youtube video /* VFX: Screenshot of youtube video*/ but I had a look at a few /* VFX: screenshot of youtube search with shotlists */ and it seems this is pretty much the information needed for a shot list. 
+
+TEACHER
+Thank you. You know its quite difficult to teach when you keep getting interrupted. Now where was I? Ah yes...when you wish to end the shot use a closing shot tag again within a boneyard /* VFX: show screenshot this script and below closing shot */ with the format SHOTEND x: (again with the final space) and close the boneyard. 
+
+DEV
+Oh and there is one other bit that is not ideal but good enough for me and that is Shot tags both opening and closing have to have a line in between them. I know, I know /* VFX: Show screenshot of SHOT TAGS highlighting lines*/
+
+GEEK
+So to actually create a shotlist from a fountain document use a very similar format to Summary breakdown i.e. tick the Shot List box and start and a message saying shotlist.csv has been created will be shown. The CSV file created can then be used wherever csv files are used. Most likely in spreadsheet applications e.g. excel or libre office calc and then in whichever way you want e.g. to order by or filter or change formatting/colouring etc.
+
+/* SHOTEND 5: */
+
+TEACHER
+Now Now, pay attention this is important shotlist.csv has the following format. First column is "Shot Number", second column is "Scene Number" both are self explanatory, then "Scene Name" e.g. INT. STUDIO - DAY, then "Shot Size" e.g. CU which is close up or MW for medium wide. There is no restriction on what you put in any of the fields from Shot Size through to description so whatever works for you. Next "Shot Type" e.g. single, double etc. Next "Angle/Origin" e.g. Eye/Frontal or hip etc. Next "Movement" e.g. Static or Dolly. Next "lens" e.g. 50mm/35mm/24mm. Next "Sound" e.g. SYNC. Next "Description" a general summary of the shot. Next "Start Line Index" which shows where the text starts. "Start Char Index" shows a starting index number for the first letter or character then "End Char Index" shows similar for the ending character. "End Line Index" which shows where the SHOTEND tag is. "Surrounding Text" which is the text that the shot encompasses.
+
+STEPHANOS
+Here ends my basic bit daft tutorial on using AUBRUSHLI I hope it all makes sense, if not feel free to contact me or raise an issue on the github page or just let me know how you get on. Enjoy AUBRUSHLI and please click like and subscribe.
