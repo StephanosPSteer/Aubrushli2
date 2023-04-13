@@ -1,7 +1,13 @@
 # Aubrushli2
 Version2 with killer feature Shot list Generator
 
-Whole new codebase and extensive and innovative change to shotlists that mean instead of manually trawling a fountain document to mark shots Aubrushli 2 will give user defined (by default very extensive) coverage to ALL!!! Scenes within a script. I include the BigFish fountain document from [Fountain.io[(https://fountain.io/) and running Aubrushli 2 against that creates 190 shotlists taken from the scenes in the script and covering all actions with multiple shots!!!!
+Whole new codebase and extensive and innovative change to shotlists that mean instead of manually trawling a fountain document to mark shots, 
+
+# Aubrushli 2 will give user defined (by default very extensive) coverage to ALL!!! Scenes within a script. 
+
+I include the BigFish fountain document from [Fountain.io[(https://fountain.io/) 
+
+and running Aubrushli 2 against that creates 190 shotlists taken from the scenes in the script and covering all actions with multiple shots!!!!
 
 Here is an example of what A shotlist looks like in the new version.
 
