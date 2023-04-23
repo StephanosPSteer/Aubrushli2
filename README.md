@@ -23,7 +23,7 @@ The first column of this references the amount of Characters in a scene, the mor
 
 # also note [Windows Installer in releases](https://github.com/StephanosPSteer/Aubrushli2/releases/tag/version2_0)
 
-#COMING SOON
+# COMING SOON
 
 creating cast lists from screenplays saved as plain text
 creating cast lists from screenplays saved as PDF
