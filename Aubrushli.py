@@ -1,8 +1,6 @@
 import fountainplus
 import pandas as pd
-import argparse
 from collections import Counter
-import os
 import csv
 
 class Aubrushli:
@@ -15,13 +13,11 @@ class Aubrushli:
     curr_act_chars_in_scene =[]
     combine_chars = []
     shotlist =[]
-    outfolder = 'G:/Aubrushli_images_current/shotlists/'
+  
     productionName = "bigfish"
     currdesc = ''
     currscneno = 0
-    infile = "G:/Aubrushli_images_current/bigfish.fountain"
-    shotsdef = 'G:/Aubrushli_images_current/shot_vals.csv'
-    initialCSV = 'G:/Aubrushli_images_current/bigfish.csv'
+
     # need to insert at real lines not fountain lines so remember to add the difference on to the fountain line
     # to get the actual insert line
 
@@ -78,18 +74,19 @@ class Aubrushli:
                     return line_number -2
         return -1
 
-    def createshotlist(self, numcharacters, outpath, action_df, df, shot_vals_df):
-
-        print(self.f_start_scene_line)
-        print(self.f_next_scene_line)
-        print(numcharacters)
-        print(outpath)
+    def createshotlist(self, numcharacters, outpath, action_df, df, shot_vals_df, sending_format=1, startline=f_start_scene_line, endline=f_next_scene_line, currscene=currscneno, currscenename=f_scene_name, combined=combine_chars, production=productionName):
 
 
-        # What are the actions in our scene
+        #self.currscneno, self.f_scene_name
+        #self.combine_chars
+
+        # note for fdx this can be line number or just send through the df as is
+        # What are the actions in our scene?
+
+       # if sending_format==1:
         filact_df = action_df[ 
-                        (action_df['original_line'].astype(int) >= self.f_start_scene_line) & 
-                        (action_df['original_line'].astype(int) <= self.f_next_scene_line)]
+                        (action_df['original_line'].astype(int) >= startline) & 
+                        (action_df['original_line'].astype(int) <= endline)]
         
         filreact_df = filact_df.reset_index(drop=True)
         # shot number you create depending on shots 
@@ -108,8 +105,10 @@ class Aubrushli:
         current_type = ''
         previousval = 0
 
-        thisscene_df = df[(df['original_line'].astype(int) >= self.f_start_scene_line) & 
-                        (df['original_line'].astype(int) <= self.f_next_scene_line)]
+        # for fdx could just send through a scenedf
+        #if sending_format==1:
+        thisscene_df = df[(df['original_line'].astype(int) >= startline) & 
+                        (df['original_line'].astype(int) <= endline)]
         
         for scenerowindex, thisscenerow in thisscene_df.iterrows():
             #print('element: ' + thisscenerow['element_type'])
@@ -120,33 +119,36 @@ class Aubrushli:
             #if it does then I allow OTS shots as it implies we are in a conversation.
             #REMEMBER actions are the only thing I am sending to SD as dialog is heard not seen.
             # there is probably a much better way to do this.
-            if current_type == '':
+            #if sending_format==1:
+
+                if current_type == '':
+                    current_type = thisscenerow['element_type']
+                # now start checking element type
+                if thisscenerow['element_type'] == 'Action' or thisscenerow['element_type'] == 'Dialogue' or thisscenerow['element_type'] == 'Character' or thisscenerow['element_type'] == 'Parenthetical':
+                    if thisscenerow['original_line'] == 24:
+                        print(thisscenerow['element_type'])
+                        # this element is an action was the previous dialoguey
+                    if thisscenerow['element_type'] == 'Action' and (current_type == 'Dialogue' or current_type == 'Character' or current_type == 'Parenthetical'):
+                        matching_lines.append(thisscenerow['original_line'])
+                        # this element is dialoguey was the previous an action
+                    elif (thisscenerow['element_type'] == 'Dialogue' or thisscenerow['element_type'] == 'Character' or thisscenerow['element_type'] == 'Parenthetical') and current_type == 'Action':
+                        matching_lines.append(previousval)
+                        #neither
+                previousval = thisscenerow['original_line']
                 current_type = thisscenerow['element_type']
-            # now start checking element type
-            if thisscenerow['element_type'] == 'Action' or thisscenerow['element_type'] == 'Dialogue' or thisscenerow['element_type'] == 'Character' or thisscenerow['element_type'] == 'Parenthetical':
-                if thisscenerow['original_line'] == 24:
-                    print(thisscenerow['element_type'])
-                    # this element is an action was the previous dialoguey
-                if thisscenerow['element_type'] == 'Action' and (current_type == 'Dialogue' or current_type == 'Character' or current_type == 'Parenthetical'):
-                    matching_lines.append(thisscenerow['original_line'])
-                    # this element is dialoguey was the previous an action
-                elif (thisscenerow['element_type'] == 'Dialogue' or thisscenerow['element_type'] == 'Character' or thisscenerow['element_type'] == 'Parenthetical') and current_type == 'Action':
-                    matching_lines.append(previousval)
-                    #neither
-            previousval = thisscenerow['original_line']
-            current_type = thisscenerow['element_type']
 
-
+        #if sending_format==1:
     #not sure about this anymore as I need more than just checking if dialog exists now
         currdialog_df = df[(df['element_type'] =='Dialogue') &
-                        (df['original_line'].astype(int) >= self.f_start_scene_line) & 
-                        (df['original_line'].astype(int) <= self.f_next_scene_line)]
+                        (df['original_line'].astype(int) >= startline) & 
+                        (df['original_line'].astype(int) <= endline)]
 
         finshot ={}
         # do I want drones and extreme wides, probably not indoors
         dronesetc = 0
-        if 'EXT.' in self.f_scene_name or self.f_scene_name.startswith("."):
-            dronesetc=1 #thetext in row['element_text']:
+        if sending_format==1:
+            if 'EXT.' in currscenename or currscenename.startswith("."):
+                dronesetc=1 #thetext in row['element_text']:
         # choose shots depending on characters in scene
         #print(f_scene_name)
         #print(dronesetc)
@@ -160,7 +162,7 @@ class Aubrushli:
                 #print(thisscenerow)
         
         
-        #*********steph here 11/04/23 need to work out who the primary actor in the scene is. and create a column called primary actor
+        #*********steph 11/04/23 need to work out who the primary actor in the scene is. and create a column called primary actor
     # also the sentiment model is pretty good lets try it.
         
 
@@ -171,8 +173,10 @@ class Aubrushli:
             #print(theaction) # description 
             mydesc = theaction['element_text']
             eddesc = mydesc
+            # really just useful for fountain docs idiosyncracies
             if '(V.O'.lower() in mydesc:
                 #print(theaction['original_content'])
+                
                 eddesc =   mydesc.replace(theaction['original_content'].lower(), '') 
                 #print(mydesc)
                 #print(eddesc) 
@@ -188,26 +192,26 @@ class Aubrushli:
                         for line in matching_lines:
                             if theaction['original_line'] == line:
                                 #otsok = 1
-                                values = mycounter + 1, self.currscneno, self.f_scene_name, shotrow['shot_size'], shotrow['shot_type'], shotrow['AngleOrigin'], 'STATIC or PAN', shotrow['lens'] \
-                                ,'SYNC', eddesc, numcharacters, self.combine_chars
+                                values = mycounter + 1, currscene, currscenename, shotrow['shot_size'], shotrow['shot_type'], shotrow['AngleOrigin'], 'STATIC or PAN', shotrow['lens'] \
+                                ,'SYNC', eddesc, numcharacters, combined
                     
                                 finshot[mycounter] = dict(zip(keys, values))
                                 mycounter = mycounter +1
                                 matching_lines.remove(line)
                     else:
-                        values = mycounter + 1, self.currscneno, self.f_scene_name, shotrow['shot_size'], shotrow['shot_type'], shotrow['AngleOrigin'], 'STATIC or PAN', shotrow['lens'] \
-                                ,'SYNC', eddesc, numcharacters, self.combine_chars
+                        values = mycounter + 1, currscene, currscenename, shotrow['shot_size'], shotrow['shot_type'], shotrow['AngleOrigin'], 'STATIC or PAN', shotrow['lens'] \
+                                ,'SYNC', eddesc, numcharacters, combined
                     
                         finshot[mycounter] = dict(zip(keys, values))
                         mycounter = mycounter +1
             #mycounter = mycounter +1
             #df.loc[i] = [Shot_Number , Scene_Number, Scene_Name, Shot_Size, Shot_Type, AngleOrigin, MoveMent, lens, Sound, Description]
         shotlist_df = pd.DataFrame.from_dict(finshot, orient='index') # shotlist_df.append(row, ignore_index=True)
-        nodots = self.f_scene_name.replace(".","")
+        nodots = currscenename.replace(".","")
         noslashes = nodots.replace("/","")
         nosbacklashes = noslashes.replace("\\","")
         nospaces = nosbacklashes.replace(" ","_")
-        csvpath = outpath + '/' + str(self.currscneno) + self.productionName + '_' + nospaces + '.csv'
+        csvpath = outpath + '/' + str(currscene) + production + '_' + nospaces + '.csv'
             # Write the dataframe to a CSV file
         shotlist_df.to_csv(csvpath, index=False)
 
@@ -336,7 +340,7 @@ class Aubrushli:
             character_count = len(combine_charsdf['items'].unique())
             #print(count)
             #self.createshotlist(character_count) 
-            self.createshotlist(character_count, outpath, action_df, df, shot_vals_df)
+            self.createshotlist(character_count, outpath, action_df, df, shot_vals_df, 1, self.f_start_scene_line, self.f_next_scene_line, self.currscneno, self.f_scene_name, combine_chars, self.productionName )
 
 
     def create_breakdown_summary(self, fountainfile, csvfile):
