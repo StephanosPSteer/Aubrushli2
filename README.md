@@ -1,4 +1,7 @@
 # Aubrushli2
+
+UPDATE: 23/04/23 Now supports creating Shot and Cast Lists from Final Draft fdx xml files.
+
 # Version2 with killer feature: AUTOMATED SHOT LIST GENERATOR
 
 Whole new codebase and extensive and innovative change to shotlists that mean instead of manually trawling a fountain document to mark shots, 
@@ -18,6 +21,9 @@ The first column of this references the amount of Characters in a scene, the mor
 
 ![shot_defs](https://user-images.githubusercontent.com/26924183/231724450-669171ff-ef2d-4703-a19e-7194404275e7.png)
 
-Will create a better readme for this soon 
-
 # also note [Windows Installer in releases](https://github.com/StephanosPSteer/Aubrushli2/releases/tag/version2_0)
+
+#COMING SOON
+
+creating cast lists from screenplays saved as plain text
+creating cast lists from screenplays saved as PDF
