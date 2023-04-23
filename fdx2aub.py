@@ -1,10 +1,4 @@
 import xml.etree.ElementTree as ET
-# tree = ET.parse(r'D:\pythonEnvs\stable_LLM\Big_Fish.fdx')
-# root = tree.getroot()
-
-# for child in root:
-#     print(child.tag, child.attrib)
-
 import sys
 import sqlite3
 import pandas as pd
@@ -66,17 +60,6 @@ class fdx2aub:
         connection.execute('PRAGMA journal_mode = WAL')
         connection.execute('PRAGMA cache_size = -8192')
         connection.commit()
-            
-                        
-
-
-
-            
-        #output_file_name = r"D:\pythonEnvs\stable_LLM\test.txt"
-        #input_file_name = r'G:\Aubrushli_images_current\Big_Fish.fdx'
-        #shotsdef = r'G:\Aubrushli_images_current\shot_vals.csv'
-        #outpath = 'G:/Aubrushli_images_current/fdxshotlists/'
-        #file = open(output_file_name,"w")
 
 
 
@@ -196,7 +179,7 @@ class fdx2aub:
                                 scenetypenum=0
                                 self.writelinetodb(connection, screenplayID, text_element.text.upper() , linenum, 'scene', scenenum, scenetypenum, off, length, page, chars=charsinscene)
 
-        #*************************steph need a characters in scene update here to distinct characters*************************************
+       
         cursor = connection.cursor()
         sql = "CREATE TEMP TABLE distchars as select distinct line, scenenum from fdxlines where linetype = 'character' group by scenenum, line order by scenenum" 
         sql1 ="create temp table finchars as select count(line) thechars, scenenum from distchars group by scenenum"
@@ -206,12 +189,7 @@ class fdx2aub:
         cursor.execute(sql2)
         connection.commit()
                 
-        #file.close()
-                #print(linenum, scenenum, scenetypenum)  
 
-
-
-        # need to loop round each scene in db for shots call aubrushli.py
 
 
 
@@ -267,14 +245,7 @@ class fdx2aub:
                 aubshot = Aubrushli()
                 aubshot.createshotlist( charsinscene, outpath, actionsdf, df, shot_vals_df, 2, startline, endline, currsceneno, curscenename, combined, 'Big_FDX_Fish')
 
-                #createshotlist( numcharacters, outpath, action_df, df, shot_vals_df, sending_format=1, startline=f_start_scene_line, endline=f_next_scene_line, currscene=currscneno, currscenename=f_scene_name, combined=combine_chars):
 
-
-
-
-
-        # also need a start and end line for the scene
-        # use the sending format param to allow extra
 
         connection.close()
 
