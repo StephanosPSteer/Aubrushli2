@@ -89,6 +89,11 @@ class Aubrushli:
                         (action_df['original_line'].astype(int) <= endline)]
         
         filreact_df = filact_df.reset_index(drop=True)
+        if 'charsinscene' not in filreact_df:
+            print('not')
+            filreact_df.loc[:, 'charsinscene'] = numcharacters
+        else:
+            print('ya')
         # shot number you create depending on shots 
 
         #the headers for the shotlist
@@ -146,16 +151,13 @@ class Aubrushli:
         finshot ={}
         # do I want drones and extreme wides, probably not indoors
         dronesetc = 0
-        if sending_format==1:
-            if 'EXT.' in currscenename or currscenename.startswith("."):
+        #if sending_format==1:
+        if 'EXT.' in currscenename or currscenename.startswith("."):
                 dronesetc=1 #thetext in row['element_text']:
         # choose shots depending on characters in scene
         #print(f_scene_name)
         #print(dronesetc)
-        # this check is all about what shots are needed as per number of characters
-        filshot_df = shot_vals_df[(shot_vals_df['min_chars'] <=numcharacters) & (shot_vals_df['dronesetc'] <= dronesetc) &  (shot_vals_df['dialog'] <= len(currdialog_df))]
-        finshot_df = filshot_df.reset_index(drop=True)
-        finshot_df = finshot_df.drop_duplicates()
+
             
             #elif current_type == 'Action':
             #if current_type == '':
@@ -181,6 +183,12 @@ class Aubrushli:
                 #print(mydesc)
                 #print(eddesc) 
                 #THESE ARE THE SHOTS
+
+                    # this check is all about what shots are needed as per number of characters
+            numcharacters = theaction['charsinscene']
+            filshot_df = shot_vals_df[(shot_vals_df['min_chars'] <=numcharacters) & (shot_vals_df['dronesetc'] <= dronesetc) &  (shot_vals_df['dialog'] <= len(currdialog_df))]
+            finshot_df = filshot_df.reset_index(drop=True)
+            finshot_df = finshot_df.drop_duplicates()
             for index, shotrow in finshot_df.iterrows():
                     #otsok = 0
                     #values = index + 1, currscneno, f_scene_name, shotrow['shot_size'], shotrow['shot_type'], shotrow['AngleOrigin'], 'STATIC or PAN', shotrow['lens'] \
